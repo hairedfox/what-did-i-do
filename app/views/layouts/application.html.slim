@@ -12,7 +12,7 @@ html
     .container-fluid
       = render "layouts/navbar"
       - if notice
-        p.notice = notice
+        .alert.alert-success = notice
       - if alert
-        p.alert = alert
+        .alert.alert-danger = alert
       = yield
