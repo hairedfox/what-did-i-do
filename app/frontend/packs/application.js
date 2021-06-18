@@ -14,3 +14,4 @@ ActiveStorage.start()
 
 import "jquery"
 import "controllers"
+import "../js/bootstrap_js_files.js"
