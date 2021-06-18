@@ -13,3 +13,4 @@ Turbolinks.start()
 ActiveStorage.start()
 
 import "jquery"
+import "controllers"
