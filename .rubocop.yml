@@ -1,0 +1,9 @@
+require: rubocop-rails
+
+AllCops:
+  NewCops: enable
+
+Rails/FilePath:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
