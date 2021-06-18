@@ -9,6 +9,10 @@ html
     = stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
   body
-    p.notice= notice
-    p.alert= alert
-    = yield
+    .container-fluid
+      = render "layouts/navbar"
+      - if notice
+        p.notice = notice
+      - if alert
+        p.alert = alert
+      = yield

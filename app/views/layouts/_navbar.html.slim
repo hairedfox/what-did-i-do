@@ -1,0 +1,22 @@
+nav.navbar.navbar-expand-lg.navbar-light.bg-light
+  .container-fluid
+    = link_to "What Did I Do???", root_path, class: "navbar-brand"
+    button.navbar-toggler aria-controls="navbarSupportedContent" aria-expanded="false" aria-label=("Toggle navigation") data-bs-target="#navbarSupportedContent" data-bs-toggle="collapse" type="button"
+      span.navbar-toggler-icon
+    #navbarSupportedContent.collapse.navbar-collapse
+      ul.navbar-nav.me-auto.mb-2.mb-lg-0.d-flex.justify-content-between.w-100
+        div
+          li.nav-item
+            = link_to "Home", root_path, class: "nav-link active", "aria-current": "page"
+        li.nav-item.dropdown
+          a#navbarDropdown.nav-link.dropdown-toggle aria-expanded="false" data-bs-toggle="dropdown" href="#" role="button"
+            | Actions
+          ul.dropdown-menu aria-labelledby="navbarDropdown"
+            - if current_user
+              li
+                = link_to "Logout", destroy_user_session_path, method: :delete, class: "dropdown-item"
+            - else
+              li
+                = link_to "Login", new_user_session_path, class: "dropdown-item"
+              li
+                = link_to "Sign Up", new_user_registration_path, class: "dropdown-item"

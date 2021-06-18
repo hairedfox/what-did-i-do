@@ -1,0 +1,18 @@
+.devise-container.mt-5
+  .wrapper.fadeInDown
+    #formContent
+
+      h1.display-5 Sign In
+
+      = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+        = f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email", class: "fadeIn second", id: "login"
+        = f.password_field :password, autocomplete: "current-password", placeholder: "Password", class: "fadeIn third", id: "password"
+        - if devise_mapping.rememberable?
+          div
+            = f.check_box :remember_me
+            = f.label :remember_me
+
+        = f.submit "Login", class: "fadeIn fourth"
+
+      #formFooter
+        = render "devise/shared/links"
