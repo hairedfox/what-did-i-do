@@ -1,0 +1,13 @@
+.devise-container
+  .wrapper.fadeInDown
+    #formContent
+      h1.display-5.fadeIn.first Sign up
+
+      = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+        = render "devise/shared/error_messages", resource: resource
+        = f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email", class: "fadeIn second"
+        = f.password_field :password, autocomplete: "new-password", placeholder: "Password", class: "fadeIn third"
+        = f.password_field :password_confirmation, autocomplete: "new-password", placeholder: "Password Confirmation", class: "fadeIn fourth"
+        = f.submit "Sign up", class: "fadeIn fifth"
+      #formFooter
+        = render "devise/shared/links"
