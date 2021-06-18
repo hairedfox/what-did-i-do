@@ -20,5 +20,12 @@ module WhatDidIDo
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    config.generators do |g|
+      g.template_engine :slim
+      g.test_framework false
+      g.scaffold_stylesheet false
+      g.stylesheets false
+      g.helper false
+    end
   end
 end
