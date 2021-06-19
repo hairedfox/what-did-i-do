@@ -23,4 +23,12 @@ class UserActivitiesController < BaseController
 
     render json: service.result, status: :ok
   end
+
+  def destroy
+    user_activity = UserActivity.find(params[:id])
+
+    user_activity.destroy
+
+    render json: { success: true }, status: :ok
+  end
 end

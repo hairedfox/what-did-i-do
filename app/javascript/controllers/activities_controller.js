@@ -51,6 +51,20 @@ export default class extends Controller {
     .then(() => this.clearTarget())
   }
 
+  removeActivity() {
+    const id = $(this.element).find('.activity-id').data('id')
+    const url = new URL(`/user_activities/${id}`, serverUrl())
+
+    fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken()
+      }
+    })
+    .then(_ => $(this.element).remove())
+  }
+
   changeTimes(event) {
     const operator = $(event.target).text()
     const numberToChange = operator === "+" ? (+this.changedTimesTarget.value) : (-this.changedTimesTarget.value)
