@@ -16,7 +16,7 @@ class UserActivitiesController < BaseController
     service = if request.patch?
                 UserActivityServices::UpdateSingleAttributeService.new(params)
               else
-                # UserActivityServices::UpdateService.new(params)
+                UserActivityServices::UpdateService.new(params)
               end
 
     service.perform

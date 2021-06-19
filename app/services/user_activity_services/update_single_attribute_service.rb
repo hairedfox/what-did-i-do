@@ -13,6 +13,7 @@ module UserActivityServices
       attribute = attribute_to_update
       ActiveRecord::Base.transaction do
         raise ArgumentError, 'Not implemented yet!' unless attribute.keys.include?('times')
+
         tracker = user_activity.tracker
         tracker.update!(times: tracker.times + params[:times].to_i)
         @result = serialize(user_activity).merge(success: true)
