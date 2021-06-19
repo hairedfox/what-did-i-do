@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_19_032147) do
+ActiveRecord::Schema.define(version: 2021_06_19_032739) do
 
   create_table "activities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
@@ -24,6 +24,16 @@ ActiveRecord::Schema.define(version: 2021_06_19_032147) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "entity_categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "categorizable_id"
+    t.string "categorizable_type"
+    t.bigint "category_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["categorizable_id"], name: "index_entity_categories_on_categorizable_id"
+    t.index ["category_id"], name: "index_entity_categories_on_category_id"
   end
 
   create_table "user_activities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -57,6 +67,7 @@ ActiveRecord::Schema.define(version: 2021_06_19_032147) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "entity_categories", "categories"
   add_foreign_key "user_activities", "activities"
   add_foreign_key "user_activities", "users"
 end
