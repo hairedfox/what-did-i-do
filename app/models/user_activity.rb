@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class UserActivity < ApplicationRecord
+  UPDATABLE_ATTRIBUTES = %w[times].freeze
+
   belongs_to :activity
   belongs_to :user
 

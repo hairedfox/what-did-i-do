@@ -1,10 +1,10 @@
-li.d-flex.justify-content-between.activity-item.w-50
-  .w-100
+li.d-flex.justify-content-between.activity-item.w-50 data-controller="activities"
+  .w-100.activity-id data-id="#{user_activity.id}"
     strong.activity-name = user_activity.name
     span.activity-times.badge.bg-success.rounded-pill.ms-3 = user_activity.times
     div.activity-notes = user_activity.notes
 
   div.d-flex
-    input.form-control type="number" placeholder="Number"
-    button.btn.btn-success.ms-2.btn-plus.align-self-center +
-    button.btn.btn-danger.ms-2.btn-minus.align-self-center -
+    input.form-control type="number" placeholder="Number" data-target="activities.changedTimes" min="0"
+    button.btn.btn-success.ms-2.btn-plus.align-self-center data-action="click->activities#changeTimes" +
+    button.btn.btn-danger.ms-2.btn-minus.align-self-center data-action="click->activities#changeTimes" -

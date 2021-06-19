@@ -1,14 +1,11 @@
 # frozen_string_literal: true
 
-class CreateActivityService
+class CreateActivityService < BaseService
   attr_reader :params
-  attr_accessor :success, :errors, :result
 
   def initialize(params)
+    super
     @params = params
-    @success = false
-    @errors = []
-    @current_user = RequestStore.store[:current_user]
   end
 
   def perform
@@ -16,8 +13,7 @@ class CreateActivityService
       activity = create_activity!
       create_user_activity!(activity)
       create_tracker!(activity)
-      @result = serialize(activity)
-      @success = true
+      @result = serialize(activity).merge(success: true)
     end
 
     true
@@ -28,7 +24,7 @@ class CreateActivityService
   private
 
   def create_activity!
-    Activity.find_by!(name: params[:name]) ||
+    Activity.find_by(name: params[:name]) ||
       Activity.create!(
         name: params[:name],
         action_type: Activity.action_types[:counting]
@@ -44,7 +40,7 @@ class CreateActivityService
     end
 
     UserActivity.create!(
-      user: @current_user,
+      user: current_user,
       activity: activity,
       notes: params[:notes]
     )
@@ -67,12 +63,6 @@ class CreateActivityService
 
   def serialize(activity)
     ::UserActivitySerializer.new(activity.user_activities.last).as_json
-  end
-
-  def handle_error(err)
-    Rails.logger.debug(err)
-    @errors << 'Something Went Wrong!'
-    @success = false
   end
 
   def user_activities_today(activity)

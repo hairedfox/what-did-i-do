@@ -9,10 +9,18 @@ class UserActivitiesController < BaseController
     service = CreateActivityService.new(params)
     service.perform
 
-    if service.success
-      render json: { success: true, data: service.result }, status: :ok
-    else
-      render json: { success: false, data: nil, errors: service.errors }, status: :ok
-    end
+    render json: service.result, status: :ok
+  end
+
+  def update
+    service = if request.patch?
+                UserActivityServices::UpdateSingleAttributeService.new(params)
+              else
+                UserActivityServices::UpdateService.new(params)
+              end
+
+    service.perform
+
+    render json: service.result, status: :ok
   end
 end

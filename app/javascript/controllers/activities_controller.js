@@ -1,14 +1,17 @@
 import { bindExpression } from "@babel/types"
 import { thisStringValue } from "es-abstract"
 import { Controller } from "stimulus"
+import { csrfToken, serverUrl } from '../utils/common'
 
 export default class extends Controller {
-  static targets = ["name", "times", "notes"]
+  static targets = ["name", "times", "notes", "changedTimes"]
 
-  initialize() {}
+  connect() {
+    super.connect()
+  }
 
   addActivity() {
-    const url = new URL('/user_activities', `${window.location.origin}`)
+    const url = new URL('/user_activities/', `${serverUrl()}`)
 
     const activity = {
       name: this.nameTarget.value,
@@ -22,13 +25,13 @@ export default class extends Controller {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        'X-CSRF-Token': csrfToken()
       },
       body: JSON.stringify(activity)
     })
     .then(res => res.json())
     .then((res) => {
-      const attributes = res.data.data.attributes
+      const { attributes } = res.data
       const { name } = attributes
 
       if (this.checkExistUserAction(name)) {
@@ -41,28 +44,53 @@ export default class extends Controller {
           $(item.element).find('.activity-notes').text(notes)
         }
       } else {
-        const listItem = this.createActivityElement(res.data.data)
+        const listItem = this.createActivityElement(res.data.attributes)
         $('.activity-group').append(listItem)
       }
     })
     .then(() => this.clearTarget())
   }
 
+  changeTimes(event) {
+    const operator = $(event.target).text()
+    const numberToChange = operator === "+" ? (+this.changedTimesTarget.value) : (-this.changedTimesTarget.value)
+    const id = $('.activity-id').data('id')
+    const url = new URL(`/user_activities/${id}`, serverUrl())
+    const obj = {
+      times: numberToChange,
+    }
+
+    fetch(url, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken()
+      },
+      body: JSON.stringify(obj)
+    })
+    .then(res => res.json())
+    .then(res => {
+      const { attributes } = res.data
+      $(this.element).find('.activity-times').text(attributes.times)
+      this.changedTimesTarget.value = ''
+    })
+  }
+
   createActivityElement(data) {
     const firstDiv = document.createElement('div')
     firstDiv.classList.add('w-100')
-
+    debugger
     const activityName = document.createElement('strong')
     activityName.classList.add('activity-name')
-    activityName.innerHTML = data.attributes.name
+    activityName.innerHTML = data.name
 
     const activityTimes = document.createElement('span')
     activityTimes.classList = 'badge bg-success rounded-pill ms-3 activity-times'
-    activityTimes.innerHTML = data.attributes.times
+    activityTimes.innerHTML = data.times
 
     const activityNotes = document.createElement('div')
     activityNotes.classList.add('activity-notes')
-    activityNotes.innerHTML = data.attributes.notes
+    activityNotes.innerHTML = data.notes
 
     firstDiv.appendChild(activityName)
     firstDiv.appendChild(activityTimes)
