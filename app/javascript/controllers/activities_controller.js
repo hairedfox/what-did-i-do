@@ -54,11 +54,13 @@ export default class extends Controller {
   changeTimes(event) {
     const operator = $(event.target).text()
     const numberToChange = operator === "+" ? (+this.changedTimesTarget.value) : (-this.changedTimesTarget.value)
-    const id = $('.activity-id').data('id')
+    const id = $(this.element).find('.activity-id').data('id')
     const url = new URL(`/user_activities/${id}`, serverUrl())
     const obj = {
       times: numberToChange,
     }
+
+    const that = this
 
     fetch(url, {
       method: 'PATCH',
@@ -71,15 +73,15 @@ export default class extends Controller {
     .then(res => res.json())
     .then(res => {
       const { attributes } = res.data
-      $(this.element).find('.activity-times').text(attributes.times)
-      this.changedTimesTarget.value = ''
+      $(that.element).find('.activity-times').text(attributes.times)
+      that.changedTimesTarget.value = ''
     })
   }
 
   createActivityElement(data) {
     const firstDiv = document.createElement('div')
     firstDiv.classList.add('w-100')
-    debugger
+
     const activityName = document.createElement('strong')
     activityName.classList.add('activity-name')
     activityName.innerHTML = data.name
@@ -96,6 +98,8 @@ export default class extends Controller {
     firstDiv.appendChild(activityTimes)
     firstDiv.appendChild(activityNotes)
 
+    firstDiv.dataset.target = 'activities.changedTimes'
+
     const secondDiv = document.createElement('div')
     secondDiv.classList.add('d-flex')
 
@@ -107,10 +111,12 @@ export default class extends Controller {
     const plusButton = document.createElement('button')
     plusButton.classList = 'btn btn-success ms-2 btn-plus align-self-center'
     plusButton.innerHTML = '+'
+    plusButton.dataset.action = 'click->activities#changeTimes'
 
     const minusButton = document.createElement('button')
     minusButton.classList = 'btn btn-danger ms-2 btn-plus align-self-center'
     minusButton.innerHTML = '-'
+    minusButton.dataset.action = 'click->activities#changeTimes'
 
     secondDiv.appendChild(inputNumber)
     secondDiv.appendChild(plusButton)
@@ -120,6 +126,7 @@ export default class extends Controller {
     listItem.classList = 'd-flex justify-content-between activity-item w-50'
     listItem.appendChild(firstDiv)
     listItem.appendChild(secondDiv)
+    listItem.dataset.controller = this.identifier
 
     return listItem;
   }

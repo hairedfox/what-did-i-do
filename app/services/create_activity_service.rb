@@ -4,7 +4,7 @@ class CreateActivityService < BaseService
   attr_reader :params
 
   def initialize(params)
-    super
+    super()
     @params = params
   end
 

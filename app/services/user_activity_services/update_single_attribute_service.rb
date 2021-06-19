@@ -5,7 +5,7 @@ module UserActivityServices
     attr_reader :params
 
     def initialize(params)
-      super
+      super()
       @params = params
     end
 
@@ -13,7 +13,6 @@ module UserActivityServices
       attribute = attribute_to_update
       ActiveRecord::Base.transaction do
         raise ArgumentError, 'Not implemented yet!' unless attribute.keys.include?('times')
-
         tracker = user_activity.tracker
         tracker.update!(times: tracker.times + params[:times].to_i)
         @result = serialize(user_activity).merge(success: true)
@@ -23,7 +22,7 @@ module UserActivityServices
     private
 
     def user_activity
-      @user_activity ||= UserActivity.find(params[:id])
+      UserActivity.find(params[:id])
     end
 
     def attribute_to_update
