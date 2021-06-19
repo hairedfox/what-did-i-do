@@ -2,6 +2,12 @@ require: rubocop-rails
 
 AllCops:
   NewCops: enable
+  Exclude:
+    - db/**/*
+    - config/initializers/**/*
+    - bin/**/*
+    - Guardfile
+    - config/environments/*
 
 Rails/FilePath:
   Enabled: false
