@@ -44,7 +44,7 @@ export default class extends Controller {
           $(item.element).find('.activity-notes').text(notes)
         }
       } else {
-        const listItem = this.createActivityElement(res.data.attributes)
+        const listItem = this.createActivityElement(res.data)
         $('.activity-group').append(listItem)
       }
     })
@@ -94,25 +94,25 @@ export default class extends Controller {
 
   createActivityElement(data) {
     const firstDiv = document.createElement('div')
-    firstDiv.classList.add('w-100')
+    firstDiv.classList = 'w-100 activity-id'
 
     const activityName = document.createElement('strong')
     activityName.classList.add('activity-name')
-    activityName.innerHTML = data.name
+    activityName.innerHTML = data.attributes.name
 
     const activityTimes = document.createElement('span')
     activityTimes.classList = 'badge bg-success rounded-pill ms-3 activity-times'
-    activityTimes.innerHTML = data.times
+    activityTimes.innerHTML = data.attributes.times
 
     const activityNotes = document.createElement('div')
     activityNotes.classList.add('activity-notes')
-    activityNotes.innerHTML = data.notes
+    activityNotes.innerHTML = data.attributes.notes
 
     firstDiv.appendChild(activityName)
     firstDiv.appendChild(activityTimes)
     firstDiv.appendChild(activityNotes)
 
-    firstDiv.dataset.target = 'activities.changedTimes'
+    firstDiv.dataset.id = data.id
 
     const secondDiv = document.createElement('div')
     secondDiv.classList.add('d-flex')
@@ -136,10 +136,16 @@ export default class extends Controller {
     secondDiv.appendChild(plusButton)
     secondDiv.appendChild(minusButton)
 
+    const removeButton = document.createElement('button')
+    removeButton.classList = 'btn btn-danger ms-2 btn-remove align-self-center'
+    removeButton.dataset.action = 'click->activities#removeActivity'
+    removeButton.innerText = 'x'
+
     const listItem = document.createElement('li')
     listItem.classList = 'd-flex justify-content-between activity-item w-50'
     listItem.appendChild(firstDiv)
     listItem.appendChild(secondDiv)
+    listItem.appendChild(removeButton)
     listItem.dataset.controller = this.identifier
 
     return listItem;
