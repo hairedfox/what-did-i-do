@@ -4,9 +4,16 @@ class UserActivity < ApplicationRecord
   belongs_to :activity
   belongs_to :user
 
-  has_many :trackers, dependent: :destroy
+  has_one :tracker, dependent: :destroy
 
   before_create :init_start_date
+
+  delegate :times, to: :tracker
+  delegate :name, :notes, to: :activity
+
+  scope :for_today, -> do
+    where(start_date: Date.today.all_day)
+  end
 
   private
 

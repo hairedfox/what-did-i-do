@@ -5,5 +5,5 @@ require 'rails_helper'
 RSpec.describe UserActivity, type: :model do
   it { should belong_to(:activity) }
   it { should belong_to(:user) }
-  it { should have_many(:trackers) }
+  it { should have_one(:tracker) }
 end

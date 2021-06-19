@@ -5,5 +5,5 @@ Rails.application.routes.draw do
 
   root to: 'home#index'
 
-  resources :activities, only: :index
+  resources :user_activities, only: %i[index create]
 end
