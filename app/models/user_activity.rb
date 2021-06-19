@@ -4,6 +4,8 @@ class UserActivity < ApplicationRecord
   belongs_to :activity
   belongs_to :user
 
+  has_many :trackers, dependent: :destroy
+
   before_create :init_start_date
 
   private

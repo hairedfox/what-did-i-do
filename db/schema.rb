@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_19_035018) do
+ActiveRecord::Schema.define(version: 2021_06_19_052806) do
 
   create_table "activities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
@@ -34,6 +34,17 @@ ActiveRecord::Schema.define(version: 2021_06_19_035018) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["categorizable_id"], name: "index_entity_categories_on_categorizable_id"
     t.index ["category_id"], name: "index_entity_categories_on_category_id"
+  end
+
+  create_table "trackers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "tracker_type"
+    t.datetime "occurred_at"
+    t.integer "times", default: 0
+    t.bigint "user_activity_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["occurred_at"], name: "index_trackers_on_occurred_at"
+    t.index ["user_activity_id"], name: "index_trackers_on_user_activity_id"
   end
 
   create_table "user_activities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -69,6 +80,7 @@ ActiveRecord::Schema.define(version: 2021_06_19_035018) do
   end
 
   add_foreign_key "entity_categories", "categories"
+  add_foreign_key "trackers", "user_activities"
   add_foreign_key "user_activities", "activities"
   add_foreign_key "user_activities", "users"
 end
