@@ -3,8 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe Activity, type: :model do
-  subject { build(:activity) }
-
   it { should have_many(:user_activities) }
   it { should have_many(:users) }
   it { should have_many(:entity_categories) }
