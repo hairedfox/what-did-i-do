@@ -5,6 +5,9 @@ require 'rails_helper'
 RSpec.describe Activity, type: :model do
   subject { build(:activity) }
 
+  it { should have_many(:user_activities) }
+  it { should have_many(:users) }
+
   it { should validate_presence_of(:name) }
   it { should validate_presence_of(:action_type) }
   it do
