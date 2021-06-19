@@ -1,11 +1,11 @@
+import { bindExpression } from "@babel/types"
+import { thisStringValue } from "es-abstract"
 import { Controller } from "stimulus"
 
 export default class extends Controller {
   static targets = ["name", "times", "notes"]
 
-  initialize() {
-    console.log("Go here")
-  }
+  initialize() {}
 
   addActivity() {
     const url = new URL('/user_activities', `${window.location.origin}`)
@@ -28,10 +28,24 @@ export default class extends Controller {
     })
     .then(res => res.json())
     .then((res) => {
-      const listItem = this.createActivityElement(res.data.data)
-      $('.activity-group').append(listItem)
-      this.clearTarget()
+      const attributes = res.data.data.attributes
+      const { name } = attributes
+
+      if (this.checkExistUserAction(name)) {
+        const list = this.elementList().filter(e => e.name === name)
+
+        if (list.length > 0) {
+          const { times, notes } = attributes
+          const item = list.pop()
+          $(item.element).find('.activity-times').text(times)
+          $(item.element).find('.activity-notes').text(notes)
+        }
+      } else {
+        const listItem = this.createActivityElement(res.data.data)
+        $('.activity-group').append(listItem)
+      }
     })
+    .then(() => this.clearTarget())
   }
 
   createActivityElement(data) {
@@ -39,13 +53,15 @@ export default class extends Controller {
     firstDiv.classList.add('w-100')
 
     const activityName = document.createElement('strong')
+    activityName.classList.add('activity-name')
     activityName.innerHTML = data.attributes.name
 
     const activityTimes = document.createElement('span')
-    activityTimes.classList = 'badge bg-success rounded-pill ms-3'
+    activityTimes.classList = 'badge bg-success rounded-pill ms-3 activity-times'
     activityTimes.innerHTML = data.attributes.times
 
     const activityNotes = document.createElement('div')
+    activityNotes.classList.add('activity-notes')
     activityNotes.innerHTML = data.attributes.notes
 
     firstDiv.appendChild(activityName)
@@ -84,5 +100,22 @@ export default class extends Controller {
     this.nameTarget.value = ''
     this.notesTarget.value = ''
     this.timesTarget.value = ''
+  }
+
+  elementList() {
+    return $('.activity-group').children()
+      .map((_, element) => {
+        return {
+          name: $(element).find('.activity-name').text(),
+          element
+        }
+      })
+      .toArray()
+  }
+
+  checkExistUserAction(name) {
+    const listNames = this.elementList().map(e => e.name)
+
+    return listNames.includes(name)
   }
 }

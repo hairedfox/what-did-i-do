@@ -7,6 +7,7 @@ class Activity < ApplicationRecord
   has_many :categories, through: :entity_categories
 
   validates :name, :action_type, presence: true
+  validates :name, uniqueness: { case_sensitive: true }
 
   enum action_type: {
     counting: 'counting'

@@ -27,9 +27,9 @@ gem 'jbuilder', '~> 2.7'
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 gem 'devise'
-gem 'slim-rails'
-gem 'request_store'
 gem 'fast_jsonapi'
+gem 'request_store'
+gem 'slim-rails'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false

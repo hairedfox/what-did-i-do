@@ -9,11 +9,11 @@ class UserActivity < ApplicationRecord
   before_create :init_start_date
 
   delegate :times, to: :tracker
-  delegate :name, :notes, to: :activity
+  delegate :name, to: :activity
 
-  scope :for_today, -> do
-    where(start_date: Date.today.all_day)
-  end
+  scope :for_today, lambda {
+    where(start_date: Time.zone.today.all_day)
+  }
 
   private
 

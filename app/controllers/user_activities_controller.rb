@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserActivitiesController < BaseController
   def index
     @user_activities = UserActivity.for_today

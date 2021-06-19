@@ -1,8 +1,8 @@
 li.d-flex.justify-content-between.activity-item.w-50
   .w-100
-    strong = user_activity.name
-    span.badge.bg-success.rounded-pill.ms-3 = user_activity.times
-    div = user_activity.notes
+    strong.activity-name = user_activity.name
+    span.activity-times.badge.bg-success.rounded-pill.ms-3 = user_activity.times
+    div.activity-notes = user_activity.notes
 
   div.d-flex
     input.form-control type="number" placeholder="Number"
