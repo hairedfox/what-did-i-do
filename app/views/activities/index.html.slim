@@ -6,14 +6,4 @@
     input.form-control.ms-2 type="text" placeholder="Init Number"
     button.btn.btn-success.ms-2 Add
 
-  ul.activity-group
-    li.d-flex.justify-content-between.activity-item.w-50
-      .w-25
-        strong Push Up
-        span.badge.bg-success.rounded-pill.ms-3 20
-        div Notes
-
-      div.d-flex
-        input.form-control type="text" placeholder="Number"
-        button.btn.btn-success.ms-2.btn-plus.align-self-center +
-        button.btn.btn-danger.ms-2.btn-minus.align-self-center -
+  = render "activities", activities: @activities

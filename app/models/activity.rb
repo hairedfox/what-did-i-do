@@ -11,4 +11,8 @@ class Activity < ApplicationRecord
   enum action_type: {
     counting: 'counting'
   }
+
+  scope :for_today, -> do
+    where(created_at: Date.today.all_day)
+  end
 end
