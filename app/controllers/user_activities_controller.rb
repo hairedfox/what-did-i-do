@@ -25,7 +25,7 @@ class UserActivitiesController < BaseController
   end
 
   def destroy
-    user_activity = UserActivity.find(params[:id])
+    user_activity = UserActivity.for_today.find(params[:id])
 
     user_activity.destroy
 
