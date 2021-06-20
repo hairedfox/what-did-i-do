@@ -1,10 +1,21 @@
-.container.w-100.activity-list
-  h2 What did you do?
+.container.w-100.activity-list.d-flex
+  .tasks.w-50
+    h2
+      | What did you do today
+      i.fas.fa-question
 
-  p.d-flex data-controller="activities"
-    input.form-control type="text" placeholder="Push Up" data-target="activities.name"
-    input.form-control.ms-2 type="text" placeholder="Notes" data-target="activities.notes"
-    input.form-control.ms-2 type="number" placeholder="Init Number" data-target="activities.times"
-    button.btn.btn-success.ms-2 data-action="click->activities#addActivity" Add
+    p.d-flex data-controller="activities"
+      input.form-control type="text" placeholder="Push Up" data-target="activities.name"
+      input.form-control.ms-2 type="text" placeholder="Notes" data-target="activities.notes"
+      input.form-control.ms-2 type="number" placeholder="Init Number" data-target="activities.times"
+      button.btn.btn-success.ms-2 data-action="click->activities#addActivity"
+        | Add&nbsp;
+        i.fas.fa-plus
 
-  = render "user_activities", user_activities: @user_activities
+    = render "user_activities", user_activities: @user_activities
+  #live-clock.d-flex.flex-column.text-center.align-self-start.justify-content-center.w-100
+    // TODO: enhance later
+    h1
+      i.fas.fa-exclamation
+      = Time.zone.now.strftime("%Y-%m-%d")
+      i.fas.fa-exclamation

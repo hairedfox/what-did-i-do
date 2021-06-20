@@ -1,5 +1,3 @@
-import { bindExpression } from "@babel/types"
-import { thisStringValue } from "es-abstract"
 import { Controller } from "stimulus"
 import { csrfToken, serverUrl, buildElement } from '../utils/common'
 
@@ -66,8 +64,8 @@ export default class extends Controller {
   }
 
   changeTimes(event) {
-    const operator = $(event.target).text()
-    const numberToChange = operator === "+" ? (+this.changedTimesTarget.value) : (-this.changedTimesTarget.value)
+    const operatorClass = event.target.classList.value
+    const numberToChange = operatorClass.includes('plus') ? (+this.changedTimesTarget.value) : (-this.changedTimesTarget.value)
     const id = $(this.element).find('.activity-id').data('id')
     const url = new URL(`/user_activities/${id}`, serverUrl())
     const obj = {
@@ -132,7 +130,7 @@ export default class extends Controller {
 
     const plusButton = buildElement('button',
       {
-        html: '+',
+        html: '<i class="fas fa-plus">',
         classList: 'btn btn-success ms-2 btn-plus align-self-center',
         data: {
           action: 'click->activities#changeTimes'
@@ -141,8 +139,8 @@ export default class extends Controller {
 
     const minusButton = buildElement('button',
       {
-        html: '-',
-        classList: 'btn btn-danger ms-2 btn-plus align-self-center',
+        html: '<i class="fas fa-minus">',
+        classList: 'btn btn-warning ms-2 btn-plus align-self-center',
         data: {
           action: 'click->activities#changeTimes'
         }
@@ -156,7 +154,7 @@ export default class extends Controller {
 
     const removeButton = buildElement('button',
       {
-        html: 'x',
+        html: '<i class="fas fa-trash">',
         classList: 'btn btn-danger ms-2 btn-remove align-self-center',
         data: {
           action: 'click->activities#removeActivity'
@@ -165,7 +163,7 @@ export default class extends Controller {
 
     const listItem = buildElement('li',
       {
-        classList: 'd-flex justify-content-between activity-item w-50',
+        classList: 'd-flex justify-content-between activity-item',
         data: {
           controller: this.identifier,
         },
