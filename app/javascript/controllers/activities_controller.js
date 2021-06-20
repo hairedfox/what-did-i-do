@@ -1,7 +1,7 @@
 import { bindExpression } from "@babel/types"
 import { thisStringValue } from "es-abstract"
 import { Controller } from "stimulus"
-import { csrfToken, serverUrl } from '../utils/common'
+import { csrfToken, serverUrl, buildElement } from '../utils/common'
 
 export default class extends Controller {
   static targets = ["name", "times", "notes", "changedTimes"]
@@ -93,60 +93,84 @@ export default class extends Controller {
   }
 
   createActivityElement(data) {
-    const firstDiv = document.createElement('div')
-    firstDiv.classList = 'w-100 activity-id'
+    const activityName = buildElement('strong',
+      {
+        html: data.attributes.name,
+        classList: 'activity-name'
+      })
 
-    const activityName = document.createElement('strong')
-    activityName.classList.add('activity-name')
-    activityName.innerHTML = data.attributes.name
+    const activityTimes = buildElement('span',
+      {
+        html: data.attributes.times,
+        classList: 'badge bg-success rounded-pill ms-3 activity-times'
+      })
 
-    const activityTimes = document.createElement('span')
-    activityTimes.classList = 'badge bg-success rounded-pill ms-3 activity-times'
-    activityTimes.innerHTML = data.attributes.times
+    const activityNotes = buildElement('div',
+      {
+        html: data.attributes.notes,
+        classList: 'activity-notes'
+      })
 
-    const activityNotes = document.createElement('div')
-    activityNotes.classList.add('activity-notes')
-    activityNotes.innerHTML = data.attributes.notes
+    const firstDiv = buildElement('div',
+      {
+        classList: 'w-100 activity-id',
+        data: {
+          id: data.id
+        },
+        children: [activityName, activityTimes, activityNotes]
+      })
 
-    firstDiv.appendChild(activityName)
-    firstDiv.appendChild(activityTimes)
-    firstDiv.appendChild(activityNotes)
+    const inputNumber = buildElement('input',
+      {
+        placeholder: 'Number',
+        classList: 'form-control',
+        type: 'number',
+        data: {
+          target: 'activities.changedTimes'
+        }
+      })
 
-    firstDiv.dataset.id = data.id
+    const plusButton = buildElement('button',
+      {
+        html: '+',
+        classList: 'btn btn-success ms-2 btn-plus align-self-center',
+        data: {
+          action: 'click->activities#changeTimes'
+        }
+      })
 
-    const secondDiv = document.createElement('div')
-    secondDiv.classList.add('d-flex')
+    const minusButton = buildElement('button',
+      {
+        html: '-',
+        classList: 'btn btn-danger ms-2 btn-plus align-self-center',
+        data: {
+          action: 'click->activities#changeTimes'
+        }
+      })
 
-    const inputNumber = document.createElement('input')
-    inputNumber.type = 'number';
-    inputNumber.classList.add('form-control')
-    inputNumber.placeholder = "Number"
+    const secondDiv = buildElement('div',
+      {
+        classList: 'd-flex',
+        children: [inputNumber, plusButton, minusButton]
+      })
 
-    const plusButton = document.createElement('button')
-    plusButton.classList = 'btn btn-success ms-2 btn-plus align-self-center'
-    plusButton.innerHTML = '+'
-    plusButton.dataset.action = 'click->activities#changeTimes'
+    const removeButton = buildElement('button',
+      {
+        html: 'x',
+        classList: 'btn btn-danger ms-2 btn-remove align-self-center',
+        data: {
+          action: 'click->activities#removeActivity'
+        }
+      })
 
-    const minusButton = document.createElement('button')
-    minusButton.classList = 'btn btn-danger ms-2 btn-plus align-self-center'
-    minusButton.innerHTML = '-'
-    minusButton.dataset.action = 'click->activities#changeTimes'
-
-    secondDiv.appendChild(inputNumber)
-    secondDiv.appendChild(plusButton)
-    secondDiv.appendChild(minusButton)
-
-    const removeButton = document.createElement('button')
-    removeButton.classList = 'btn btn-danger ms-2 btn-remove align-self-center'
-    removeButton.dataset.action = 'click->activities#removeActivity'
-    removeButton.innerText = 'x'
-
-    const listItem = document.createElement('li')
-    listItem.classList = 'd-flex justify-content-between activity-item w-50'
-    listItem.appendChild(firstDiv)
-    listItem.appendChild(secondDiv)
-    listItem.appendChild(removeButton)
-    listItem.dataset.controller = this.identifier
+    const listItem = buildElement('li',
+      {
+        classList: 'd-flex justify-content-between activity-item w-50',
+        data: {
+          controller: this.identifier,
+        },
+        children: [firstDiv, secondDiv, removeButton]
+      })
 
     return listItem;
   }
